@@ -1,39 +1,38 @@
+import 'package:dart_pet_project/src/models/freezed_models/species.dart';
 import 'package:dart_pet_project/src/utils/utils.dart';
 import 'package:drift/drift.dart';
 
 import 'package:dart_pet_project/src/repositories/database.dart';
 
-/// Fetches and saves species data along with associated films.
-///
-/// [db]: The AppDatabase instance.
-/// [results]: A list of dynamic objects representing species data.
-Future<void> fetchAndSaveSpecies(AppDatabase db, List<dynamic> results) async {
-  for (var result in results) {
-    final speciesId = await saveSpecies(db, result);
-    await saveSpeciesFilms(db, result, speciesId);
+import 'base_data_saver.dart';
+
+class SpeciesSaver extends BaseDataSaver<Species>{
+
+  SpeciesSaver(super.db);
+
+  @override
+  Future<void> fetchAndSave(List<Species> items) async {
+    for (var element in items) {
+      final speciesId = await _saveSpecies(db, element);
+      await _saveSpeciesFilms(db, element, speciesId);
+    }
   }
 }
 
-/// Saves species data into the database and returns the inserted species ID.
-///
-/// [db]: The AppDatabase instance.
-/// [result]: A map containing species data.
-///
-/// Returns the ID of the inserted species.
-Future<int> saveSpecies(AppDatabase db, Map<String, dynamic> result) async {
+Future<int> _saveSpecies(AppDatabase db, Species species) async {
   final speciesId = await db.into(db.species).insert(
     SpeciesCompanion.insert(
-      name: Value(result['name'] as String),
-      classification: Value(result['classification'] as String),
-      designation: Value(result['designation'] as String),
-      averageHeight: Value(result['average_height'] as String),
-      averageLifespan: Value(result['average_lifespan'] as String),
-      eyeColors: Value(result['eye_colors'] as String),
-      hairColors: Value(result['hair_colors'] as String),
-      skinColors: Value(result['skin_colors'] as String),
-      language: Value(result['language'] as String),
-      homeworldId: (result['homeworld'] != null)
-          ? Value(extractIdFromUrl(result['homeworld']))
+      name: Value(species.name ?? ''),
+      classification: Value(species.classification ?? ''),
+      designation: Value(species.designation ?? ''),
+      averageHeight: Value(species.averageHeight ?? ''),
+      averageLifespan: Value(species.averageLifespan ?? ''),
+      eyeColors: Value(species.eyeColors ?? ''),
+      hairColors: Value(species.hairColors ?? ''),
+      skinColors: Value(species.skinColors ?? ''),
+      language: Value(species.language ?? ''),
+      homeworldId: species.homeworld != null
+          ? Value(extractIdFromUrl(species.homeworld!))
           : const Value<int?>.absent(),
     ),
   );
@@ -41,14 +40,10 @@ Future<int> saveSpecies(AppDatabase db, Map<String, dynamic> result) async {
   return speciesId;
 }
 
-/// Saves the association between a species and its films in the SpeciesFilms table.
-///
-/// [db]: The AppDatabase instance.
-/// [result]: A map containing species data.
-/// [speciesId]: The ID of the species.
-Future<void> saveSpeciesFilms(AppDatabase db, Map<String, dynamic> result, int speciesId) async {
-  if (result['films'] != null) {
-    for (var filmUrl in result['films']) {
+
+Future<void> _saveSpeciesFilms(AppDatabase db, Species species, int speciesId) async {
+  if (species.films != null && species.films!.isNotEmpty) {
+    for (var filmUrl in species.films!) {
       final filmId = extractIdFromUrl(filmUrl);
 
       if (filmId != null) {

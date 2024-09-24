@@ -1,7 +1,7 @@
-import 'package:dart_pet_project/src/models/People.dart';
+import 'package:dart_pet_project/src/models/drift/people.dart';
 import 'package:drift/drift.dart';
 
-import 'Films.dart';
+import 'films.dart';
 
 class Planets extends Table{
   IntColumn get id => integer().autoIncrement()();

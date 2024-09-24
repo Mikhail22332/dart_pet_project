@@ -1,32 +1,30 @@
-import 'dart:io';
 
-import 'package:dart_pet_project/src/repositories/database.dart';
-import 'package:dart_pet_project/src/routers/router.dart';
+import 'package:dart_pet_project/src/services/data_fetcher.dart';
+import 'package:dio/dio.dart' as dio_lib;
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
-import 'package:shelf_router/shelf_router.dart';
+import 'dart:io';
+
+import 'package:dart_pet_project/src/repositories/database.dart' as db;
+import 'package:dart_pet_project/src/routers/router_adapter.dart';
 
 const String version = '0.0.1';
 
-final basicRouter = Router()
-  ..get('/', _rootHandler);
-
-
 Future<void> main() async {
-
   final port = 8000;
 
-  final database = AppDatabase();
-  final apiRouter = createApiRouter(database);
+  final dio_lib.Dio dio = dio_lib.Dio();
+  final database = db.AppDatabase();
+  final dataFetcher = DataFetcher(dio, database);
+  final RouterAdapter routerAdapter = RouterAdapter(database, dataFetcher);
+
+  final apiRouter = routerAdapter.createApiRouter();
 
   final cascade = Cascade()
-      .add(basicRouter.call)
       .add(apiRouter.call);
 
   final server = await shelf_io.serve(
-    logRequests()
-        .addHandler(cascade.handler),
-
+    logRequests().addHandler(cascade.handler),
     InternetAddress.loopbackIPv4,
     port,
   );
@@ -35,7 +33,5 @@ Future<void> main() async {
 
   _watch.start();
 }
-
-Response _rootHandler(Request request) => Response.ok('Welcome to the Basic Router!');
 
 final _watch = Stopwatch();

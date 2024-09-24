@@ -1,10 +1,10 @@
 import 'package:drift/drift.dart';
 
-import 'Films.dart';
-import 'Planets.dart';
-import 'Species.dart';
-import 'Starships.dart';
-import 'Vehicles.dart';
+import 'films.dart';
+import 'planets.dart';
+import 'species.dart';
+import 'starships.dart';
+import 'vehicles.dart';
 
 class People extends Table{
     IntColumn get id => integer().autoIncrement()();
@@ -13,8 +13,8 @@ class People extends Table{
     TextColumn get eyeColor => text().nullable()();
     TextColumn get gender => text().nullable()();
     TextColumn get hairColor => text().nullable()();
-    IntColumn get height => integer().nullable()();
-    IntColumn get mass => integer().nullable()();
+    TextColumn get height => text().nullable()();
+    TextColumn get mass => text().nullable()();
     TextColumn get skinColor => text().nullable()();
     IntColumn get homeWorldId => integer().references(Planets, #id).nullable()();
     IntColumn get speciesId => integer().references(Species, #id).nullable()();

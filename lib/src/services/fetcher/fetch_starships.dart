@@ -1,57 +1,50 @@
+import 'package:dart_pet_project/src/models/freezed_models/starships.dart';
+import 'package:dart_pet_project/src/services/fetcher/base_data_saver.dart';
 import 'package:dart_pet_project/src/utils/utils.dart';
 
 import 'package:dart_pet_project/src/repositories/database.dart';
+import 'package:drift/drift.dart';
 
-/// Fetches and saves starship data along with associated films.
-///
-/// [db]: The AppDatabase instance.
-/// [results]: A list of dynamic objects representing starship data.
-Future<void> fetchAndSaveStarships(AppDatabase db, List<dynamic> results) async {
 
-  for (var result in results) {
+class StarshipsSaver extends BaseDataSaver<Starships>{
 
-    final int starshipId = await saveStarship(db, result);
+  StarshipsSaver(super.db);
 
-    await saveStarshipFilms(db, result, starshipId);
+  @override
+  Future<void> fetchAndSave(List<Starships> items) async {
+    for (var starship in items) {
+      final int starshipId = await _saveStarship(db, starship);
+      await _saveStarshipFilms(db, starship, starshipId);
+    }
   }
 }
 
-/// Saves starship data into the database and returns the inserted starship ID.
-///
-/// [db]: The AppDatabase instance.
-/// [result]: A map containing starship data.
-///
-/// Returns the ID of the inserted starship.
-Future<int> saveStarship(AppDatabase db, Map<String, dynamic> result) async {
+Future<int> _saveStarship(AppDatabase db, Starships starship) async {
   final starshipId = await db.into(db.starships).insert(
     StarshipsCompanion.insert(
-      name: result['name'],
-      model: result['model'],
-      starshipClass: result['starship_class'],
-      manufacturer: result['manufacturer'],
-      length: result['length'],
-      costInCredits: result['cost_in_credits'],
-      crew: result['crew'],
-      passengers:result['passengers'],
-      maxAtmospheringSpeed: result['max_atmosphering_speed'],
-      hyperdriveRating: result['hyperdrive_rating'],
-      MGLT:result['MGLT'],
-      cargoCapacity: result['cargo_capacity'],
-      consumables: result['consumables'],
+        name: starship.name ?? '',
+        model: starship.model ?? '',
+        starshipClass: starship.starshipClass ?? '',
+        manufacturer: starship.manufacturer ?? '',
+        costInCredits: starship.costInCredits ?? '',
+        length: Value(starship.length),
+        crew: Value(starship.crew),
+        passengers: starship.passengers ?? '',
+        maxAtmospheringSpeed: starship.maxAtmospheringSpeed ?? '',
+        hyperdriveRating: starship.hyperDriveRating ?? '',
+        MGLT: starship.mglt ?? '',
+        cargoCapacity: starship.cargoCapacity ?? '',
+        consumables: starship.consumables ?? '',
     ),
   );
 
   return starshipId;
 }
 
-/// Saves the association between a starship and its films in the StarshipsFilms table.
-///
-/// [db]: The AppDatabase instance.
-/// [result]: A map containing starship data.
-/// [starshipId]: The ID of the starship.
-Future<void> saveStarshipFilms(AppDatabase db, Map<String, dynamic> result, int starshipId) async {
-  if (result['films'] != null) {
-    for (var filmUrl in result['films']) {
+
+Future<void> _saveStarshipFilms(AppDatabase db, Starships starship, int starshipId) async {
+  if (starship.films != null && starship.films!.isNotEmpty) {
+    for (var filmUrl in starship.films!) {
       final filmId = extractIdFromUrl(filmUrl);
 
       if (filmId != null) {

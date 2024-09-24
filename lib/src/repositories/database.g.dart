@@ -1147,14 +1147,14 @@ class $PeopleTable extends People with TableInfo<$PeopleTable, PeopleData> {
       type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _heightMeta = const VerificationMeta('height');
   @override
-  late final GeneratedColumn<int> height = GeneratedColumn<int>(
+  late final GeneratedColumn<String> height = GeneratedColumn<String>(
       'height', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _massMeta = const VerificationMeta('mass');
   @override
-  late final GeneratedColumn<int> mass = GeneratedColumn<int>(
+  late final GeneratedColumn<String> mass = GeneratedColumn<String>(
       'mass', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _skinColorMeta =
       const VerificationMeta('skinColor');
   @override
@@ -1270,9 +1270,9 @@ class $PeopleTable extends People with TableInfo<$PeopleTable, PeopleData> {
       hairColor: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}hair_color']),
       height: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}height']),
+          .read(DriftSqlType.string, data['${effectivePrefix}height']),
       mass: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}mass']),
+          .read(DriftSqlType.string, data['${effectivePrefix}mass']),
       skinColor: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}skin_color']),
       homeWorldId: attachedDatabase.typeMapping
@@ -1295,8 +1295,8 @@ class PeopleData extends DataClass implements Insertable<PeopleData> {
   final String? eyeColor;
   final String? gender;
   final String? hairColor;
-  final int? height;
-  final int? mass;
+  final String? height;
+  final String? mass;
   final String? skinColor;
   final int? homeWorldId;
   final int? speciesId;
@@ -1332,10 +1332,10 @@ class PeopleData extends DataClass implements Insertable<PeopleData> {
       map['hair_color'] = Variable<String>(hairColor);
     }
     if (!nullToAbsent || height != null) {
-      map['height'] = Variable<int>(height);
+      map['height'] = Variable<String>(height);
     }
     if (!nullToAbsent || mass != null) {
-      map['mass'] = Variable<int>(mass);
+      map['mass'] = Variable<String>(mass);
     }
     if (!nullToAbsent || skinColor != null) {
       map['skin_color'] = Variable<String>(skinColor);
@@ -1389,8 +1389,8 @@ class PeopleData extends DataClass implements Insertable<PeopleData> {
       eyeColor: serializer.fromJson<String?>(json['eyeColor']),
       gender: serializer.fromJson<String?>(json['gender']),
       hairColor: serializer.fromJson<String?>(json['hairColor']),
-      height: serializer.fromJson<int?>(json['height']),
-      mass: serializer.fromJson<int?>(json['mass']),
+      height: serializer.fromJson<String?>(json['height']),
+      mass: serializer.fromJson<String?>(json['mass']),
       skinColor: serializer.fromJson<String?>(json['skinColor']),
       homeWorldId: serializer.fromJson<int?>(json['homeWorldId']),
       speciesId: serializer.fromJson<int?>(json['speciesId']),
@@ -1406,8 +1406,8 @@ class PeopleData extends DataClass implements Insertable<PeopleData> {
       'eyeColor': serializer.toJson<String?>(eyeColor),
       'gender': serializer.toJson<String?>(gender),
       'hairColor': serializer.toJson<String?>(hairColor),
-      'height': serializer.toJson<int?>(height),
-      'mass': serializer.toJson<int?>(mass),
+      'height': serializer.toJson<String?>(height),
+      'mass': serializer.toJson<String?>(mass),
       'skinColor': serializer.toJson<String?>(skinColor),
       'homeWorldId': serializer.toJson<int?>(homeWorldId),
       'speciesId': serializer.toJson<int?>(speciesId),
@@ -1421,8 +1421,8 @@ class PeopleData extends DataClass implements Insertable<PeopleData> {
           Value<String?> eyeColor = const Value.absent(),
           Value<String?> gender = const Value.absent(),
           Value<String?> hairColor = const Value.absent(),
-          Value<int?> height = const Value.absent(),
-          Value<int?> mass = const Value.absent(),
+          Value<String?> height = const Value.absent(),
+          Value<String?> mass = const Value.absent(),
           Value<String?> skinColor = const Value.absent(),
           Value<int?> homeWorldId = const Value.absent(),
           Value<int?> speciesId = const Value.absent()}) =>
@@ -1501,8 +1501,8 @@ class PeopleCompanion extends UpdateCompanion<PeopleData> {
   final Value<String?> eyeColor;
   final Value<String?> gender;
   final Value<String?> hairColor;
-  final Value<int?> height;
-  final Value<int?> mass;
+  final Value<String?> height;
+  final Value<String?> mass;
   final Value<String?> skinColor;
   final Value<int?> homeWorldId;
   final Value<int?> speciesId;
@@ -1539,8 +1539,8 @@ class PeopleCompanion extends UpdateCompanion<PeopleData> {
     Expression<String>? eyeColor,
     Expression<String>? gender,
     Expression<String>? hairColor,
-    Expression<int>? height,
-    Expression<int>? mass,
+    Expression<String>? height,
+    Expression<String>? mass,
     Expression<String>? skinColor,
     Expression<int>? homeWorldId,
     Expression<int>? speciesId,
@@ -1567,8 +1567,8 @@ class PeopleCompanion extends UpdateCompanion<PeopleData> {
       Value<String?>? eyeColor,
       Value<String?>? gender,
       Value<String?>? hairColor,
-      Value<int?>? height,
-      Value<int?>? mass,
+      Value<String?>? height,
+      Value<String?>? mass,
       Value<String?>? skinColor,
       Value<int?>? homeWorldId,
       Value<int?>? speciesId}) {
@@ -1609,10 +1609,10 @@ class PeopleCompanion extends UpdateCompanion<PeopleData> {
       map['hair_color'] = Variable<String>(hairColor.value);
     }
     if (height.present) {
-      map['height'] = Variable<int>(height.value);
+      map['height'] = Variable<String>(height.value);
     }
     if (mass.present) {
-      map['mass'] = Variable<int>(mass.value);
+      map['mass'] = Variable<String>(mass.value);
     }
     if (skinColor.present) {
       map['skin_color'] = Variable<String>(skinColor.value);
@@ -1685,8 +1685,8 @@ class $StarshipsTable extends Starships
   static const VerificationMeta _lengthMeta = const VerificationMeta('length');
   @override
   late final GeneratedColumn<String> length = GeneratedColumn<String>(
-      'length', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      'length', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _costInCreditsMeta =
       const VerificationMeta('costInCredits');
   @override
@@ -1696,8 +1696,8 @@ class $StarshipsTable extends Starships
   static const VerificationMeta _crewMeta = const VerificationMeta('crew');
   @override
   late final GeneratedColumn<String> crew = GeneratedColumn<String>(
-      'crew', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      'crew', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _passengersMeta =
       const VerificationMeta('passengers');
   @override
@@ -1794,8 +1794,6 @@ class $StarshipsTable extends Starships
     if (data.containsKey('length')) {
       context.handle(_lengthMeta,
           length.isAcceptableOrUnknown(data['length']!, _lengthMeta));
-    } else if (isInserting) {
-      context.missing(_lengthMeta);
     }
     if (data.containsKey('cost_in_credits')) {
       context.handle(
@@ -1808,8 +1806,6 @@ class $StarshipsTable extends Starships
     if (data.containsKey('crew')) {
       context.handle(
           _crewMeta, crew.isAcceptableOrUnknown(data['crew']!, _crewMeta));
-    } else if (isInserting) {
-      context.missing(_crewMeta);
     }
     if (data.containsKey('passengers')) {
       context.handle(
@@ -1877,11 +1873,11 @@ class $StarshipsTable extends Starships
       manufacturer: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}manufacturer'])!,
       length: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}length'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}length']),
       costInCredits: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}cost_in_credits'])!,
       crew: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}crew'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}crew']),
       passengers: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}passengers'])!,
       maxAtmospheringSpeed: attachedDatabase.typeMapping.read(
@@ -1910,9 +1906,9 @@ class Starship extends DataClass implements Insertable<Starship> {
   final String model;
   final String starshipClass;
   final String manufacturer;
-  final String length;
+  final String? length;
   final String costInCredits;
-  final String crew;
+  final String? crew;
   final String passengers;
   final String maxAtmospheringSpeed;
   final String hyperdriveRating;
@@ -1925,9 +1921,9 @@ class Starship extends DataClass implements Insertable<Starship> {
       required this.model,
       required this.starshipClass,
       required this.manufacturer,
-      required this.length,
+      this.length,
       required this.costInCredits,
-      required this.crew,
+      this.crew,
       required this.passengers,
       required this.maxAtmospheringSpeed,
       required this.hyperdriveRating,
@@ -1942,9 +1938,13 @@ class Starship extends DataClass implements Insertable<Starship> {
     map['model'] = Variable<String>(model);
     map['starship_class'] = Variable<String>(starshipClass);
     map['manufacturer'] = Variable<String>(manufacturer);
-    map['length'] = Variable<String>(length);
+    if (!nullToAbsent || length != null) {
+      map['length'] = Variable<String>(length);
+    }
     map['cost_in_credits'] = Variable<String>(costInCredits);
-    map['crew'] = Variable<String>(crew);
+    if (!nullToAbsent || crew != null) {
+      map['crew'] = Variable<String>(crew);
+    }
     map['passengers'] = Variable<String>(passengers);
     map['max_atmosphering_speed'] = Variable<String>(maxAtmospheringSpeed);
     map['hyperdrive_rating'] = Variable<String>(hyperdriveRating);
@@ -1961,9 +1961,10 @@ class Starship extends DataClass implements Insertable<Starship> {
       model: Value(model),
       starshipClass: Value(starshipClass),
       manufacturer: Value(manufacturer),
-      length: Value(length),
+      length:
+          length == null && nullToAbsent ? const Value.absent() : Value(length),
       costInCredits: Value(costInCredits),
-      crew: Value(crew),
+      crew: crew == null && nullToAbsent ? const Value.absent() : Value(crew),
       passengers: Value(passengers),
       maxAtmospheringSpeed: Value(maxAtmospheringSpeed),
       hyperdriveRating: Value(hyperdriveRating),
@@ -1982,9 +1983,9 @@ class Starship extends DataClass implements Insertable<Starship> {
       model: serializer.fromJson<String>(json['model']),
       starshipClass: serializer.fromJson<String>(json['starshipClass']),
       manufacturer: serializer.fromJson<String>(json['manufacturer']),
-      length: serializer.fromJson<String>(json['length']),
+      length: serializer.fromJson<String?>(json['length']),
       costInCredits: serializer.fromJson<String>(json['costInCredits']),
-      crew: serializer.fromJson<String>(json['crew']),
+      crew: serializer.fromJson<String?>(json['crew']),
       passengers: serializer.fromJson<String>(json['passengers']),
       maxAtmospheringSpeed:
           serializer.fromJson<String>(json['maxAtmospheringSpeed']),
@@ -2003,9 +2004,9 @@ class Starship extends DataClass implements Insertable<Starship> {
       'model': serializer.toJson<String>(model),
       'starshipClass': serializer.toJson<String>(starshipClass),
       'manufacturer': serializer.toJson<String>(manufacturer),
-      'length': serializer.toJson<String>(length),
+      'length': serializer.toJson<String?>(length),
       'costInCredits': serializer.toJson<String>(costInCredits),
-      'crew': serializer.toJson<String>(crew),
+      'crew': serializer.toJson<String?>(crew),
       'passengers': serializer.toJson<String>(passengers),
       'maxAtmospheringSpeed': serializer.toJson<String>(maxAtmospheringSpeed),
       'hyperdriveRating': serializer.toJson<String>(hyperdriveRating),
@@ -2021,9 +2022,9 @@ class Starship extends DataClass implements Insertable<Starship> {
           String? model,
           String? starshipClass,
           String? manufacturer,
-          String? length,
+          Value<String?> length = const Value.absent(),
           String? costInCredits,
-          String? crew,
+          Value<String?> crew = const Value.absent(),
           String? passengers,
           String? maxAtmospheringSpeed,
           String? hyperdriveRating,
@@ -2036,9 +2037,9 @@ class Starship extends DataClass implements Insertable<Starship> {
         model: model ?? this.model,
         starshipClass: starshipClass ?? this.starshipClass,
         manufacturer: manufacturer ?? this.manufacturer,
-        length: length ?? this.length,
+        length: length.present ? length.value : this.length,
         costInCredits: costInCredits ?? this.costInCredits,
-        crew: crew ?? this.crew,
+        crew: crew.present ? crew.value : this.crew,
         passengers: passengers ?? this.passengers,
         maxAtmospheringSpeed: maxAtmospheringSpeed ?? this.maxAtmospheringSpeed,
         hyperdriveRating: hyperdriveRating ?? this.hyperdriveRating,
@@ -2142,9 +2143,9 @@ class StarshipsCompanion extends UpdateCompanion<Starship> {
   final Value<String> model;
   final Value<String> starshipClass;
   final Value<String> manufacturer;
-  final Value<String> length;
+  final Value<String?> length;
   final Value<String> costInCredits;
-  final Value<String> crew;
+  final Value<String?> crew;
   final Value<String> passengers;
   final Value<String> maxAtmospheringSpeed;
   final Value<String> hyperdriveRating;
@@ -2173,9 +2174,9 @@ class StarshipsCompanion extends UpdateCompanion<Starship> {
     required String model,
     required String starshipClass,
     required String manufacturer,
-    required String length,
+    this.length = const Value.absent(),
     required String costInCredits,
-    required String crew,
+    this.crew = const Value.absent(),
     required String passengers,
     required String maxAtmospheringSpeed,
     required String hyperdriveRating,
@@ -2186,9 +2187,7 @@ class StarshipsCompanion extends UpdateCompanion<Starship> {
         model = Value(model),
         starshipClass = Value(starshipClass),
         manufacturer = Value(manufacturer),
-        length = Value(length),
         costInCredits = Value(costInCredits),
-        crew = Value(crew),
         passengers = Value(passengers),
         maxAtmospheringSpeed = Value(maxAtmospheringSpeed),
         hyperdriveRating = Value(hyperdriveRating),
@@ -2236,9 +2235,9 @@ class StarshipsCompanion extends UpdateCompanion<Starship> {
       Value<String>? model,
       Value<String>? starshipClass,
       Value<String>? manufacturer,
-      Value<String>? length,
+      Value<String?>? length,
       Value<String>? costInCredits,
-      Value<String>? crew,
+      Value<String?>? crew,
       Value<String>? passengers,
       Value<String>? maxAtmospheringSpeed,
       Value<String>? hyperdriveRating,
@@ -5750,8 +5749,8 @@ typedef $$PeopleTableCreateCompanionBuilder = PeopleCompanion Function({
   Value<String?> eyeColor,
   Value<String?> gender,
   Value<String?> hairColor,
-  Value<int?> height,
-  Value<int?> mass,
+  Value<String?> height,
+  Value<String?> mass,
   Value<String?> skinColor,
   Value<int?> homeWorldId,
   Value<int?> speciesId,
@@ -5763,8 +5762,8 @@ typedef $$PeopleTableUpdateCompanionBuilder = PeopleCompanion Function({
   Value<String?> eyeColor,
   Value<String?> gender,
   Value<String?> hairColor,
-  Value<int?> height,
-  Value<int?> mass,
+  Value<String?> height,
+  Value<String?> mass,
   Value<String?> skinColor,
   Value<int?> homeWorldId,
   Value<int?> speciesId,
@@ -5896,12 +5895,12 @@ class $$PeopleTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<int> get height => $state.composableBuilder(
+  ColumnFilters<String> get height => $state.composableBuilder(
       column: $state.table.height,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<int> get mass => $state.composableBuilder(
+  ColumnFilters<String> get mass => $state.composableBuilder(
       column: $state.table.mass,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
@@ -6022,12 +6021,12 @@ class $$PeopleTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<int> get height => $state.composableBuilder(
+  ColumnOrderings<String> get height => $state.composableBuilder(
       column: $state.table.height,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<int> get mass => $state.composableBuilder(
+  ColumnOrderings<String> get mass => $state.composableBuilder(
       column: $state.table.mass,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
@@ -6094,8 +6093,8 @@ class $$PeopleTableTableManager extends RootTableManager<
             Value<String?> eyeColor = const Value.absent(),
             Value<String?> gender = const Value.absent(),
             Value<String?> hairColor = const Value.absent(),
-            Value<int?> height = const Value.absent(),
-            Value<int?> mass = const Value.absent(),
+            Value<String?> height = const Value.absent(),
+            Value<String?> mass = const Value.absent(),
             Value<String?> skinColor = const Value.absent(),
             Value<int?> homeWorldId = const Value.absent(),
             Value<int?> speciesId = const Value.absent(),
@@ -6120,8 +6119,8 @@ class $$PeopleTableTableManager extends RootTableManager<
             Value<String?> eyeColor = const Value.absent(),
             Value<String?> gender = const Value.absent(),
             Value<String?> hairColor = const Value.absent(),
-            Value<int?> height = const Value.absent(),
-            Value<int?> mass = const Value.absent(),
+            Value<String?> height = const Value.absent(),
+            Value<String?> mass = const Value.absent(),
             Value<String?> skinColor = const Value.absent(),
             Value<int?> homeWorldId = const Value.absent(),
             Value<int?> speciesId = const Value.absent(),
@@ -6273,9 +6272,9 @@ typedef $$StarshipsTableCreateCompanionBuilder = StarshipsCompanion Function({
   required String model,
   required String starshipClass,
   required String manufacturer,
-  required String length,
+  Value<String?> length,
   required String costInCredits,
-  required String crew,
+  Value<String?> crew,
   required String passengers,
   required String maxAtmospheringSpeed,
   required String hyperdriveRating,
@@ -6289,9 +6288,9 @@ typedef $$StarshipsTableUpdateCompanionBuilder = StarshipsCompanion Function({
   Value<String> model,
   Value<String> starshipClass,
   Value<String> manufacturer,
-  Value<String> length,
+  Value<String?> length,
   Value<String> costInCredits,
-  Value<String> crew,
+  Value<String?> crew,
   Value<String> passengers,
   Value<String> maxAtmospheringSpeed,
   Value<String> hyperdriveRating,
@@ -6538,9 +6537,9 @@ class $$StarshipsTableTableManager extends RootTableManager<
             Value<String> model = const Value.absent(),
             Value<String> starshipClass = const Value.absent(),
             Value<String> manufacturer = const Value.absent(),
-            Value<String> length = const Value.absent(),
+            Value<String?> length = const Value.absent(),
             Value<String> costInCredits = const Value.absent(),
-            Value<String> crew = const Value.absent(),
+            Value<String?> crew = const Value.absent(),
             Value<String> passengers = const Value.absent(),
             Value<String> maxAtmospheringSpeed = const Value.absent(),
             Value<String> hyperdriveRating = const Value.absent(),
@@ -6570,9 +6569,9 @@ class $$StarshipsTableTableManager extends RootTableManager<
             required String model,
             required String starshipClass,
             required String manufacturer,
-            required String length,
+            Value<String?> length = const Value.absent(),
             required String costInCredits,
-            required String crew,
+            Value<String?> crew = const Value.absent(),
             required String passengers,
             required String maxAtmospheringSpeed,
             required String hyperdriveRating,

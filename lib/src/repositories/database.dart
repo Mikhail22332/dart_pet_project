@@ -1,16 +1,14 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:dart_pet_project/src/models/Films.dart';
-import 'package:dart_pet_project/src/models/People.dart';
-import 'package:dart_pet_project/src/models/Planets.dart';
-import 'package:dart_pet_project/src/models/Species.dart';
-import 'package:dart_pet_project/src/models/Starships.dart';
-import 'package:dart_pet_project/src/models/Vehicles.dart';
+import 'package:dart_pet_project/src/models/drift/films.dart';
+import 'package:dart_pet_project/src/models/drift/people.dart';
+import 'package:dart_pet_project/src/models/drift/planets.dart';
+import 'package:dart_pet_project/src/models/drift/species.dart';
+import 'package:dart_pet_project/src/models/drift/starships.dart';
+import 'package:dart_pet_project/src/models/drift/vehicles.dart';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:http/http.dart' as http;
 
 part 'database.g.dart';
 
@@ -50,28 +48,9 @@ class AppDatabase extends _$AppDatabase{
     return transaction(() async {
       for (final table in allTables) {
         await delete(table).go();
+        //reset auto increment
+        await customStatement('DELETE FROM sqlite_sequence WHERE name = "${table.actualTableName}";');
       }
     });
   }
-}
-
-Future<void> testDatabase(AppDatabase db) async {
-  // Example of adding a sample planet
-  await db.into(db.planets).insert(
-    PlanetsCompanion(
-      name: Value('Test Planet'),
-      diameter: Value('10000'),
-      rotationPeriod: Value('24'),
-      orbitalPeriod: Value('365'),
-      gravity: Value('1 standard'),
-      population: Value('1000000'),
-      climate: Value('temperate'),
-      terrain: Value('mountains'),
-      surfaceWater: Value('50'),
-    ),
-  );
-
-  // Query and print the added planet
-  final planets = await db.select(db.planets).get();
-  print(planets);
 }

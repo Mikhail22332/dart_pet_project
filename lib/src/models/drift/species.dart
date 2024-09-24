@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 
-import 'Films.dart';
-import 'Planets.dart';
+import 'films.dart';
+import 'planets.dart';
 
 class Species extends Table{
     IntColumn get id => integer().autoIncrement()();
